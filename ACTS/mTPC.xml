@@ -1,0 +1,78 @@
+<!-- SPDX-License-Identifier: LGPL-3.0-or-later -->
+<!-- Copyright (C) 2024 TDIS group-->
+<lccdd>
+  <define>
+    <comment>
+      Main parameters - this is for the more realistic mTPC design
+    </comment> 
+
+	<constant name = "fmTPC_inelectrode_r "             value = "50.0*mm"/> 
+	<constant name = "fmTPC_inelectrode_kaptonthick"    value = "0.012*mm"/> 
+	<constant name = "fmTPC_inelectrode_authick"  	    value = "0.0001*mm"/> 
+	<contant  name = "fmTPC_outelectrode_r"	            value = "150.0*mm"/>
+	<constant name = "fmTPC_outelectrode_kaptonthick"   value = "0.012*mm"/> 
+	<constsnt name = "fmTPC_outelectrode_authick"       value = "0.0001*mm"/>
+	<constant name = "fmTPC_cell_len"                   value = "50.0*mm"/>
+	<constant name = "fmTPC_Ncells"                     value = "10"/> 
+	<constant name = "fmTPC_Ngems"                      value = "2"/>
+  	<constant name = "fmTPC_gem_surf1thick"             value = "0.005*mm"/>
+  	<constant name = "fmTPC_gem_dielecthick"            value = "0.05*mm"/>
+ 	<constant name = "fmTPC_gem_surf2thick"             value = "0.005*mm"/>
+  	<constant name = "fmTPC_gap_readoutGEM"		    value = "0.001*mm"/>
+  	<constant name = "fmTPC_gap_GEMGEM" 		    value = "0.001*mm"/>
+	<constant name ="fmTPC_readout_thick"  		    value = "0.05*mm"/>
+ <comment>
+      Actual parametrization
+    </comment>
+
+    <constant name="mTPC_z_total"      value="fmTPC_cell_len * fmTPC_Ncells"/>
+
+    <constant name="mTPC_centre_cell1" value= "-1.0 * fmTPC_cell_len * (fmTPC_Ncells-1) / 2.0"/>
+    <constant name= "mTPC_rIN"	       value="fmTPC_inelectrode_r + fmTPC_inelectrode_kaptonthick + fmTPC_inelectrode_authick"/>
+    <constant name ="mTPC_rOUT"        value="fmTPC_outelectrode_r -fmTPC_outelectrode_kaptonthick - fmTPC_outelectrode_authick"/>
+
+	</define>
+ <detector name ="mTPC">
+<comment> 
+      make inner and outer boundary layers
+      inner wall has two layes
+    </comment>
+ <layer id="1" inner_r="fmTPC_inelectrode_r" outer_r="fmTPC_inelectrode_r+fmTPC_inelectrode_kaptonthick" inner_z=" mtpctotallength/2.0">
+   <slice material = "Kapton" thickness ="0.012"/>
+ </layer>
+<layer id="2" inner_r="fmTPC_inelectrode_r + fmTPC_inelectrode_kaptonthick" outer_r="mtpcinnerR" inner_z=" mtpctotallength/2.0">
+   <slice material = "Au" thickness ="0.0001"/>
+ </layer>
+
+<comment>
+      outer wall has two layers,layer closest to inner gas is electrode
+    </comment>
+ <layer id="3" inner_r="mtpcouterR" outer_r="mtpcouterR+fmTPC_outelectrode_authick" inner_z=" mtpctotallength/2.0">
+   <slice material = "Au" thickness ="0.0001"/>
+ </layer>
+<layer id="4" inner_r=" mtpcouterR+fmTPC_outelectrode_authick" outer_r="fmTPC_outelectrode_r" inner_z=" mtpctotallength/2.0">
+   <slice material = "Kapton" thickness ="0.012"/>
+ </layer>
+<comment>
+      inner detector parts definition
+    </comment>
+<layer id="5">
+        <envelope vis="PadBoard"
+          rmin="innerR"
+          rmax="outerR"
+          length="fmTPC_readout_thick/2.0"
+          zstart="0.0" />
+        
+        
+      </layer>
+
+
+
+
+
+
+
+
+
+</detector>
+
